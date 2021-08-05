@@ -9,3 +9,19 @@
 {% else %}
     <p>No users are available.</p>
 {% endif %}
+<form action="{% url 'financialApp:user_index'%}" method="post">
+  {% csrf_token %}
+  <p><label for="name_text">Name:</label> <input type="text" name="name_text"></p>
+  <p>
+  Sort by:
+  <div>
+  <input type="radio" name="sort" id="first_name" value="first_name">
+    <label for="date">First name</label>
+  <input type="radio" name="sort" id="last_name" value="last_name">
+      <label for="amount">Last name</label>
+      <input type="radio" name="sort" id="none" value="none" checked="True">
+          <label for="none">None</label>
+  </div>
+  </p>
+  <input type="submit" value="Submit">
+</form>

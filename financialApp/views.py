@@ -7,12 +7,21 @@ import datetime
 import json
 
 
-class userIndexView(generic.ListView):
-    template_name = 'financialApp/user_index.html'
-    context_object_name = 'user_list'
+def user_index(request):
+    if(request.method == 'POST'):
+        sort = request.POST.get('sort')
+        name_substring = request.POST.get('name_text') # check wheather first or last name contains given string
+        u = User.objects.filter(first_name__icontains=name_substring).union(
+            User.objects.filter(last_name__icontains=name_substring))
+        if(sort == 'first_name'): # if needs to be sorted by first_name
+            u = u.order_by('-first_name')
+        elif(sort == 'last_name'):
+            u = u.order_by('-last_name')
+    else:
+        u = User.objects.all()
+    return render(request, 'financialApp/user_index.html', {'user_list':u} )
 
-    def get_queryset(self):
-        return User.objects.all()
+
 
 def user_detail(request, user_id):
     u = User.objects.get(id=user_id)
