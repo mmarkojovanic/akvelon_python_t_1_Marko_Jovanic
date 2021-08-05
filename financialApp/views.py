@@ -41,5 +41,22 @@ def user_detail(request, user_id):
             {'user' : u, 'transactions': t} )
 
 def transaction_index(request):
-    transaction_list = Transaction.objects.all()
+    if(request.method == 'POST'):
+        income_outcome = request.POST.get('income_outcome')
+        sort = request.POST.get('sort')
+        if(income_outcome=='income'): # check if user needs only income or outcome transactions
+            transaction_list = Transaction.objects.filter(amount__gte=0).filter(date__range=
+            [request.POST.get('start'), request.POST.get('end')])
+        elif(income_outcome=='outcome'):
+            transaction_list = Transaction.objects.filter(amount__lte=0).filter(date__range=
+            [request.POST.get('start'), request.POST.get('end')])
+        else:
+            transaction_list = Transaction.objects.filter(date__range=
+                        [request.POST.get('start'), request.POST.get('end')])
+        if(sort == 'amount'): # check if transactions need to be sorted
+            transaction_list = transaction_list.order_by('-amount')
+        elif(sort == 'date'):
+            transaction_list = transaction_list.order_by('-date')
+    else:
+        transaction_list = Transaction.objects.all()
     return render(request, 'financialApp/transaction_index.html', {'transaction_list' : transaction_list})

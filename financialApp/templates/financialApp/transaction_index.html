@@ -4,6 +4,28 @@
 	{% for transaction in transaction_list %}
 	      <tr><td>{{transaction.amount}}</td><td>{{transaction.date}}</td></tr>
 	{% endfor %}
+    </table>
 {% else %}
     <p>No transactions are available.</p>
 {% endif %}
+<form action="{% url 'financialApp:transaction_index'%}" method="post">
+  {% csrf_token %}
+  <p><label for="selected_date1">From:</label> <input type="date" name="start" value="2020-01-01"></p>
+  <p><label for="selected_date2">To:</label> <input type="date" name="end" value="2020-01-01"></p>
+  Show only: <select name="income_outcome" class="filter-selectbox">
+  <option value="income">Income</option>
+  <option value="outcome">Outcome</option>
+  <option value="both">Both</option></select>
+  <p>
+  Sort by:
+  <div>
+  <input type="radio" name="sort" id="date" value="date">
+    <label for="date">Date</label>
+  <input type="radio" name="sort" id="amount" value="amount">
+      <label for="amount">Amount</label>
+      <input type="radio" name="sort" id="none" value="none" checked="True">
+          <label for="none">None</label>
+  </div>
+  </p>
+  <input type="submit" value="Submit">
+</form>
