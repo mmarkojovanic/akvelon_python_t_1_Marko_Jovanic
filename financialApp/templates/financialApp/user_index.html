@@ -1,0 +1,11 @@
+{% if user_list %}
+    <ul>
+	{% for user in user_list %}
+     <li>
+	      <a href="{% url 'financialApp:user_detail' user.id %}">{{user.first_name}} {{user.last_name}}</a>
+		</li>
+	{% endfor %}
+    </ul>
+{% else %}
+    <p>No users are available.</p>
+{% endif %}

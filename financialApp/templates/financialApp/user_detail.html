@@ -1,0 +1,28 @@
+<h1>{{user.first_name}} {{user.last_name}}</h1>
+<body>
+{% if transactions%}
+<table summary="Transactions">
+  <tr><th>Amount</th><th>Date</th>
+	 {% for transaction in transactions %}
+     <tr><td>{{transaction.amount}}</td><td>{{transaction.date}}</td></tr>
+	  {% endfor %}
+</table>
+{% else %}
+    <p>No transactions are available.</p>
+{% endif %}
+<form action="{% url 'financialApp:user_detail' user.id %}" method="post">
+  {% csrf_token %}
+  <p><label for="selected_date1">From:</label> <input type="date" name="start" value="2020-01-01"></p>
+  <p><label for="selected_date2">To:</label> <input type="date" name="end" value="2020-01-01"></p>
+  <label for="repeat">Send grouped by dates JSON?</label>
+  <input id="grp" name="group" type="checkbox" >
+  <input type="submit" value="Submit">
+</form>
+{% if grouped_amounts_json %}
+<script>
+    var jsonObject = JSON.parse('{{ grouped_amounts_json | escapejs }}');
+</script>
+{% endif %}
+
+</body>
+</html>

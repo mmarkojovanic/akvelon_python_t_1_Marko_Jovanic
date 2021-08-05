@@ -1,0 +1,9 @@
+{% if transaction_list %}
+    <table summary="Transaction list">
+    <tr><th>Amount</th><th>Date</th>
+	{% for transaction in transaction_list %}
+	      <tr><td>{{transaction.amount}}</td><td>{{transaction.date}}</td></tr>
+	{% endfor %}
+{% else %}
+    <p>No transactions are available.</p>
+{% endif %}
